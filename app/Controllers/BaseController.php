@@ -1,11 +1,5 @@
 <?php
-
 namespace App\Controllers;
-
-use CodeIgniter\Controller;
-use CodeIgniter\HTTP\RequestInterface;
-use CodeIgniter\HTTP\ResponseInterface;
-use Psr\Log\LoggerInterface;
 
 /**
  * Class BaseController
@@ -16,10 +10,18 @@ use Psr\Log\LoggerInterface;
  *     class Home extends BaseController
  *
  * For security be sure to declare any new methods as protected or private.
+ *
+ * @package CodeIgniter
  */
+
+use CodeIgniter\Controller;
+use App\Models\UserModel;
+use App\Models\CarModel;
+
 
 class BaseController extends Controller
 {
+
 	/**
 	 * An array of helpers to be loaded automatically upon
 	 * class instantiation. These helpers will be available
@@ -27,16 +29,16 @@ class BaseController extends Controller
 	 *
 	 * @var array
 	 */
-	protected $helpers = [];
+	protected $helpers = ['cookie'];
+	/**
+	 * An model veriable which will be accessed in controller
+	 */
+
 
 	/**
 	 * Constructor.
-	 *
-	 * @param RequestInterface  $request
-	 * @param ResponseInterface $response
-	 * @param LoggerInterface   $logger
 	 */
-	public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
+	public function initController(\CodeIgniter\HTTP\RequestInterface $request, \CodeIgniter\HTTP\ResponseInterface $response, \Psr\Log\LoggerInterface $logger)
 	{
 		// Do Not Edit This Line
 		parent::initController($request, $response, $logger);
@@ -44,11 +46,12 @@ class BaseController extends Controller
 		//--------------------------------------------------------------------
 		// Preload any models, libraries, etc, here.
 		//--------------------------------------------------------------------
-		// E.g.: $this->session = \Config\Services::session();
-		$this->db= \Config\Database::connect();
-		$this->email = \Config\Services::email();
-		$this->validation =  \Config\Services::validation();
+		// E.g.:
 		$this->session = \Config\Services::session();
-	
+		$this->db= \Config\Database::connect();
+		$this->usermodel= new UserModel();
+		$this->carmodel= new CarModel();
+		$this->validation = \Config\Services::validation();
 	}
+
 }

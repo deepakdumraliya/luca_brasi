@@ -54,6 +54,8 @@ $routes->add('/api/send-message', 'Api::send_message');
 
 $routes->add('/api/add-fuel', 'Api::add_fuel');
 
+$routes->add('/api/get-cars', 'Api::get_cars');
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing

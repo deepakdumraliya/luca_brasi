@@ -49,7 +49,7 @@ class Api extends BaseController
     public function get_destinations()
     {
         $response = array("status" => "error");
-        $data=$this->db->table('destinations')->select('*')->get()->getResultArray();
+        $data=$this->db->table('destinations')->select('destination_id,name')->get()->getResultArray();
         if($data)
         {
             $response['status']="success";
@@ -101,11 +101,14 @@ class Api extends BaseController
 				'username' => $username,
 				'password' => md5($password),
 			);
-            $data =$this->db->table('users')->where($condition)->get()->getResultArray();
+
+            $data=$this->db->table('users')->select('user_id')->where($condition)->get()->getRowArray();
+
             if(!empty($data))
             {
                 $response['status'] = 'success';
 				$response['message'] = 'Successfully Logged in.';
+                $response['data'] =$data['user_id'] ;
             }
             else
             {      
@@ -199,6 +202,9 @@ class Api extends BaseController
                 $response['message']="Something went wrong";
             }
         }
+        else{
+            $response['message']="One or more fields required";
+        }
         $this->sendResponse($response);
     }
 
@@ -250,7 +256,12 @@ class Api extends BaseController
             else{
                 $response['message'] = 'No data found';
             }
-        }$this->sendResponse($response);
+        }
+        else
+        {
+            $response['message']    = 'One or more fields required';
+        }
+            $this->sendResponse($response);
     }
 
       /**
@@ -450,7 +461,6 @@ class Api extends BaseController
         }
         $this->sendResponse($response);
     }
-    
 
     /**
      * Send message to administrator
@@ -611,6 +621,31 @@ class Api extends BaseController
         }
         $this->sendResponse($response);
     }
+
+
+    /**
+     * Get cars
+     * @endpoint: get-cars
+     * @url : http://test-bh.potenzaglobalsolutions.com/lucabrasi/api/get-cars
+     */
+    public function get_cars()
+    {
+        $response = array("status" => "error");
+        $data=$this->db->table('tbl_car')->select('car_id,car_noplate')->get()->getResultArray();
+        if($data)
+        {
+            $response['status']="success";
+            $response['message']="stations fetched successfully.";
+            $response['data']=$data;
+            $this->sendResponse($response);
+        }
+        else
+        {
+            $response['message']="No stations found.";
+        }
+        $this->sendResponse($response);
+    }
+
     //-----------------------------------------------------------------------------------------------------------
 
      /**

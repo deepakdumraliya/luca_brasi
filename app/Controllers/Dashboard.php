@@ -523,14 +523,11 @@ class Dashboard extends BaseController
    {
     $data['days']=$this->drivingmodel->select()->get()->getResultArray();
 
-    echo "<pre>";
-    print_r($data);
-    echo "</pre>";
-    die;
+
 
        $this->header();
 
-       echo view('list_days');
+       echo view('list_days',$data);
 
        $this->footer();
    }

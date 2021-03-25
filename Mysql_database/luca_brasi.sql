@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 24, 2021 at 02:36 PM
+-- Generation Time: Mar 25, 2021 at 07:50 AM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 7.3.26
 
@@ -73,7 +73,7 @@ CREATE TABLE `driving_day` (
   `destincation_id` int(11) NOT NULL,
   `start_kilometer` int(11) NOT NULL,
   `end_kilometer` int(11) DEFAULT NULL,
-  `mark` varchar(50) NOT NULL,
+  `car_id` int(11) NOT NULL,
   `start_fuel_level` int(11) NOT NULL,
   `end_fuel_level` int(11) DEFAULT NULL,
   `start_timestamp` datetime NOT NULL,
@@ -81,15 +81,17 @@ CREATE TABLE `driving_day` (
   `accident_status` tinyint(1) DEFAULT NULL,
   `day_step_status` int(11) DEFAULT 0,
   `created` datetime NOT NULL DEFAULT current_timestamp(),
-  `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE current_timestamp()
+  `modified` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `driving_day`
 --
 
-INSERT INTO `driving_day` (`day_id`, `user_id`, `destincation_id`, `start_kilometer`, `end_kilometer`, `mark`, `start_fuel_level`, `end_fuel_level`, `start_timestamp`, `end_timestamp`, `accident_status`, `day_step_status`, `created`, `modified`) VALUES
-(6, 1, 1, 25, 650, 'Hakuna matata', 51, 20, '2021-03-23 07:25:43', '2021-03-24 00:01:10', 1, 3, '2021-03-24 11:25:42', '0000-00-00 00:00:00');
+INSERT INTO `driving_day` (`day_id`, `user_id`, `destincation_id`, `start_kilometer`, `end_kilometer`, `car_id`, `start_fuel_level`, `end_fuel_level`, `start_timestamp`, `end_timestamp`, `accident_status`, `day_step_status`, `created`, `modified`) VALUES
+(11, 3, 2, 30, NULL, 18, 31, NULL, '2021-03-25 01:05:34', NULL, NULL, 1, '2021-03-25 11:35:34', NULL),
+(14, 3, 1, 33, NULL, 20, 60, NULL, '2021-03-25 01:09:47', NULL, NULL, 1, '2021-03-25 11:39:47', NULL),
+(15, 6, 2, 33, NULL, 19, 61, NULL, '2021-03-25 01:10:43', NULL, NULL, 1, '2021-03-25 11:40:43', NULL);
 
 -- --------------------------------------------------------
 
@@ -111,14 +113,6 @@ CREATE TABLE `fuel` (
   `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `fuel`
---
-
-INSERT INTO `fuel` (`fuel_id`, `day_id`, `user_id`, `kilometer`, `zipcode`, `fuel_amount`, `amount`, `oil_status`, `blue_tanked_status`, `created`, `modified`) VALUES
-(2, 6, 1, 27, 'ABC132', 10, 50, 0, 0, '2021-03-24 11:24:28', '0000-00-00 00:00:00'),
-(3, 6, 1, 30, 'ABC132', 5, 25, 1, 0, '2021-03-24 11:24:28', '0000-00-00 00:00:00');
-
 -- --------------------------------------------------------
 
 --
@@ -133,15 +127,6 @@ CREATE TABLE `message` (
   `created` datetime NOT NULL DEFAULT current_timestamp(),
   `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `message`
---
-
-INSERT INTO `message` (`message_id`, `message`, `status`, `day_id`, `created`, `modified`) VALUES
-(1, 'Test Message', 0, 6, '2021-03-24 11:23:50', '0000-00-00 00:00:00'),
-(3, 'Test Message', 0, 6, '2021-03-24 11:37:21', '0000-00-00 00:00:00'),
-(4, 'Test Message', 0, 6, '2021-03-24 11:37:31', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -187,7 +172,8 @@ INSERT INTO `tbl_car` (`car_id`, `car_noplate`, `make`, `model`, `year`, `color`
 (34, 'WD80J5050', 'PORCHE', 'tycon', 2020, 'Grey', 'Some Car Rental Company', '2021-03-07', 'Elektrisch', 0, 25, '', '', '2021-03-05 08:18:09', '0000-00-00 00:00:00'),
 (35, 'HH-IA-1915', 'FORD', 'Transit', 2020, 'Weiss', 'Sixt', '0000-00-00', 'Diesel', 44, 5754, '', '', '2021-03-17 09:10:11', '0000-00-00 00:00:00'),
 (36, 'M-KS-111', 'MERCEDES', 'VITO', 2021, 'WEISS', 'SIXT', '0000-00-00', 'Diesel', 53, 210000, '', '', '2021-03-17 13:09:56', '0000-00-00 00:00:00'),
-(42, '123454', 'MYCAR', 'mycar', 2021, 'Gdhdghg', 'Sixty', '2021-03-04', NULL, 0, 10, 'India', 'trackingnumber', '2021-03-22 05:37:15', '0000-00-00 00:00:00');
+(42, '123454', 'MYCAR', 'mycar', 2021, 'Gdhdghg', 'Sixty', '2021-03-04', NULL, 0, 11, 'India', 'trackingnumber', '2021-03-22 05:37:15', '0000-00-00 00:00:00'),
+(43, '123456', 'AVENGERS', 'assemble', 2024, 'Matt Purpple', 'Hydra', '2021-03-25', NULL, 0, 15, 'India', 'dasdad123', '2021-03-25 04:55:45', NULL);
 
 -- --------------------------------------------------------
 
@@ -242,7 +228,8 @@ ALTER TABLE `destinations`
 ALTER TABLE `driving_day`
   ADD PRIMARY KEY (`day_id`),
   ADD KEY `usert_reference` (`user_id`),
-  ADD KEY `destincation_reference` (`destincation_id`);
+  ADD KEY `destincation_reference` (`destincation_id`),
+  ADD KEY `car_reference` (`car_id`);
 
 --
 -- Indexes for table `fuel`
@@ -291,7 +278,7 @@ ALTER TABLE `destinations`
 -- AUTO_INCREMENT for table `driving_day`
 --
 ALTER TABLE `driving_day`
-  MODIFY `day_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `day_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `fuel`
@@ -309,7 +296,7 @@ ALTER TABLE `message`
 -- AUTO_INCREMENT for table `tbl_car`
 --
 ALTER TABLE `tbl_car`
-  MODIFY `car_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `car_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT for table `tbl_user`
@@ -325,6 +312,7 @@ ALTER TABLE `tbl_user`
 -- Constraints for table `driving_day`
 --
 ALTER TABLE `driving_day`
+  ADD CONSTRAINT `car_reference` FOREIGN KEY (`car_id`) REFERENCES `tbl_car` (`car_id`),
   ADD CONSTRAINT `destincation_reference` FOREIGN KEY (`destincation_id`) REFERENCES `destinations` (`destination_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `usert_reference` FOREIGN KEY (`user_id`) REFERENCES `tbl_user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 

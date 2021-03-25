@@ -88,7 +88,11 @@
 
              <div class="form-group row">
 
+               <div class="col-sm-4 mb-3 mb-sm-0">
 
+                 <input type="date" class="form-control form-control-user" id="txtreturndate" name="txtreturndate" title="Select Return Date" required>
+
+               </div>
 
                <div class="col-sm-4 mb-3 mb-sm-0">
 

@@ -138,8 +138,32 @@ if (isset($admin_details)) {
 
 
 
-      
+        <!-- Divider -->
 
+        <hr class="sidebar-divider">
+
+
+
+        <!-- Heading -->
+
+        <div class="sidebar-heading">
+
+          Driving Days
+
+        </div>
+
+
+
+     
+        <li class="nav-item active">
+
+          <a class="nav-link" href="<?php echo base_url(); ?>/dashboard/view_days">
+
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+
+            <span>Driving Days</span></a>
+
+        </li>
 
 
         <!-- Sidebar Toggler (Sidebar) -->
@@ -235,7 +259,7 @@ if (isset($admin_details)) {
 
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
 
-                   Change Password
+                    Change Password
 
                   </a>
                   <div class="dropdown-divider"></div>

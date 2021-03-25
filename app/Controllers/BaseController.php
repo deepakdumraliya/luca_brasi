@@ -17,6 +17,7 @@ namespace App\Controllers;
 use CodeIgniter\Controller;
 use App\Models\UserModel;
 use App\Models\CarModel;
+use App\Models\DrivingDayModel;
 
 
 class BaseController extends Controller
@@ -51,6 +52,7 @@ class BaseController extends Controller
 		$this->db= \Config\Database::connect();
 		$this->usermodel= new UserModel();
 		$this->carmodel= new CarModel();
+		$this->drivingmodel= new DrivingDayModel();
 		$this->validation = \Config\Services::validation();
 	}
 

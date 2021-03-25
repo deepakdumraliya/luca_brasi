@@ -366,6 +366,7 @@ class Dashboard extends BaseController
                 if($val['car_noplate']== strtoupper(trim($this->request->getPost('txtnumberplate'), " "))){
                     $rules["txtnumberplate"] = ['label' => 'Number Plate', "rules" => "required"];
                 }
+             
 
                 if($val['gpstrackingnumber'] == trim($this->request->getPost('txttrackingnumber')))
                 {
@@ -425,5 +426,113 @@ class Dashboard extends BaseController
         }
 
     }
+
+    /**
+     * New car form
+     */
+    public function newcar()
+    {
+        $this->header();
+
+        echo view('addcar');
+
+        $this->footer();
+    }
+
+          /**
+
+	 * addcar method is the used add data in database
+
+	 */
+
+    public function addcar()
+    {
+        helper(['form', 'url']);
+
+        if ($this->session->has('admin_id')) {
+
+            if ($this->request->getPost() !== "") {
+              
+                $rules = [
+                    "txtnumberplate" => ['label' => 'Number Plate',"rules"=>"required|is_unique[tbl_car.car_noplate]"],
+                    "txtmake" => ['label' => 'Make',"rules"=>"required"],
+                    "txtmodel" => ['label' => 'Car Model',"rules"=>"required"],
+                    "txtmodelyear" => ['label' => 'Car Model year',"rules"=>"required"],
+                    "txtcolor" => ['label' => 'Color',"rules"=>"required"],
+                    "txtrentalcompany" => ['label' => 'Rental Company',"rules"=>"required"],
+                
+                    // "drpfueltype" => ['label' => 'Fuel Type',"rules"=>"required"],
+                    "txtcountrycode"=> ['label' => 'Country Code', "rules" => "required"],
+                    "txttrackingnumber"=> ['label' => 'GPS Tracking Number', "rules" => "required|is_unique[tbl_car.gpstrackingnumber]"],
+
+                    "txtmileage" => ['label' => 'Mileage',"rules"=>"required|numeric"]
+                ];
+
+                //print_r($this->request->getPost());tbl_car_transaction
+
+                if (!$this->validate($rules)) {
+                   
+                    $this->session->set("success_alert_update", "<script>swal('". $this->validator->geterror('success_alert_update')."', {icon: 'warning',});</script>");
+                    $this->session->set("txttrackingnumber", "<script>swal('" . $this->validator->geterror('txttrackingnumber') . "', {icon: 'warning',});</script>");
+                    $this->session->set("txtmake", "<script>swal('" . $this->validator->geterror('txtmake') . "', {icon: 'warning',});</script>");
+                    $this->session->set("txtmodelyear", "<script>swal('" . $this->validator->geterror('txtmodelyear') . "', {icon: 'warning',});</script>");
+                    
+                    $this->session->set("txtmodel", "<script>swal('" . $this->validator->geterror('txtmodel') . "', {icon: 'warning',});</script>");
+                    $this->session->set("txtcolor", "<script>swal('" . $this->validator->geterror('txtcolor') . "', {icon: 'warning',});</script>");
+
+                    $this->session->set("txtrentalcompany", "<script>swal('" . $this->validator->geterror('txtrentalcompany') . "', {icon: 'warning',});</script>");
+                    $this->session->set("txtcountrycode", "<script>swal('" . $this->validator->geterror('txtcountrycode') . "', {icon: 'warning',});</script>");
+                    $this->session->set("txtmileage", "<script>swal('" . $this->validator->geterror('txtmileage') . "', {icon: 'warning',});</script>");
+
+                    return redirect()->to(site_url() . '/dashboard/newcar');
+                } else {
+                    $car_details = array(
+
+                        'car_noplate' => strtoupper(trim($this->request->getPost('txtnumberplate'), " ")),
+                        'make' => strtoupper(trim($this->request->getPost('txtmake'), " ")),
+                        'model' => trim($this->request->getPost('txtmodel'), " "),
+                        'year' => $this->request->getPost("txtmodelyear"),
+                        'color' => ucwords(trim($this->request->getPost('txtcolor'), " ")),
+                        'rentalcompany' => ucwords(trim($this->request->getPost('txtrentalcompany'), "")),
+                        'returndate' => $this->request->getPost('txtreturndate'),
+                        // 'fuel_type' => $this->request->getPost('drpfueltype'),
+                        'countrycode'=>trim($this->request->getPost('txtcountrycode')),
+                        'gpstrackingnumber'=> trim($this->request->getPost('txttrackingnumber')),
+                        'car_mileage' => trim($this->request->getPost('txtmileage'))
+                    );
+                }
+
+                if ($this->carmodel->insert($car_details)) {
+                    $this->session->set("success_alert_update", "<script>swal('Car has been Added!', {icon: 'success',});</script>");
+                    return redirect()->to(base_url() . '/dashboard/newcar');             
+                } else {
+                    $this->session->set("success_alert_car", "<script>swal('Something went wrong!', {icon: 'error',});</script>");
+                    return redirect()->to(base_url() . '/dashboard/newcar');
+                }
+            }
+        } 
+        else 
+        {
+            return redirect()->to(base_url());
+        }
+    }
+    /**
+    * New car form
+    */
+   public function view_days()
+   {
+    $data['days']=$this->drivingmodel->select()->get()->getResultArray();
+
+    echo "<pre>";
+    print_r($data);
+    echo "</pre>";
+    die;
+
+       $this->header();
+
+       echo view('list_days');
+
+       $this->footer();
+   }
     //========================================================================================================
 }

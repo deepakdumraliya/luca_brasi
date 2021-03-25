@@ -130,7 +130,7 @@ class Api extends BaseController
      * station_id : ##
      * driver_id : ##
      * start_kilometer : ##
-     * mark : ##
+     * car_id : ##
      * start_fuel_level : ##
      * 
      */
@@ -142,7 +142,7 @@ class Api extends BaseController
             $response['message'] = 'Authentication Failed.';
             $this->sendResponse($response);
         }
-		$required_fields = array("station_id", "driver_id","start_kilometer","mark","start_fuel_level");
+		$required_fields = array("station_id", "driver_id","start_kilometer","car_id","start_fuel_level");
 		$status = $this->verifyRequiredParams($required_fields);
 
         if($status)
@@ -150,7 +150,7 @@ class Api extends BaseController
             $station_id         =   trim($this->request->getVar('station_id'));
             $driver_id          =   trim($this->request->getVar('driver_id'));
             $start_kilometer    =   trim($this->request->getVar('start_kilometer'));
-            $mark               =   trim($this->request->getVar('mark'));
+            $car_id               =   trim($this->request->getVar('car_id'));
             $start_fuel_level   =   trim($this->request->getVar('start_fuel_level'));
 
             if (isset($station_id) && empty($station_id)) {
@@ -168,8 +168,8 @@ class Api extends BaseController
 				$this->sendResponse($response);
 			}
 
-            if (isset($mark) && empty($mark)) {
-				$response['message'] = "Please enter mark";
+            if (isset($car_id) && empty($car_id)) {
+				$response['message'] = "Please enter car_id";
 				$this->sendResponse($response);
 			}
 
@@ -182,16 +182,22 @@ class Api extends BaseController
                 'user_id'           => $driver_id,
                 'destincation_id'   => $station_id,
                 'start_kilometer'   => $start_kilometer,
-                'mark'              => $mark,
+                'car_id'              => $car_id,
                 'start_fuel_level'  => $start_fuel_level,
                 'start_timestamp'   => $timestamp,
                 'day_step_status'   => 1
 
             );
-
-            
-            $result=$this->db->table('driving_day')->insert($data);
-
+            try
+            {
+             $result=$this->db->table('driving_day')->insert($data);
+            }
+            catch(\Exception $e)
+            {
+              
+                $response['message']="Something went wrong!";
+                $this->sendResponse($response);
+            }
             if($result)
             {
                 $response['status']="success";

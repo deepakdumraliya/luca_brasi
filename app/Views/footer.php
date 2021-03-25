@@ -307,7 +307,56 @@
 
     unset($_SESSION['success_repeate_pass']);
   }
-  
+
+  if (isset($_SESSION['txttrackingnumber'])) {
+
+    echo $_SESSION['txttrackingnumber'];
+
+    unset($_SESSION['txttrackingnumber']);
+  }
+  if (isset($_SESSION['txtmodel'])) {
+
+    echo $_SESSION['txtmodel'];
+
+    unset($_SESSION['txtmodel']);
+  }
+  if (isset($_SESSION['txtcolor'])) {
+
+    echo $_SESSION['txtcolor'];
+
+    unset($_SESSION['txtcolor']);
+  }
+  if (isset($_SESSION['txtrentalcompany'])) {
+
+    echo $_SESSION['txtrentalcompany'];
+
+    unset($_SESSION['txtrentalcompany']);
+  }
+  if (isset($_SESSION['txtcountrycode'])) {
+
+    echo $_SESSION['txtcountrycode'];
+
+    unset($_SESSION['txtcountrycode']);
+  }
+  if (isset($_SESSION['txtmileage'])) {
+
+    echo $_SESSION['txtmileage'];
+
+    unset($_SESSION['txtmileage']);
+  }
+  if (isset($_SESSION['txtmodelyear'])) {
+
+    echo $_SESSION['txtmodelyear'];
+
+    unset($_SESSION['txtmodelyear']);
+  }
+
+  if (isset($_SESSION['txtmake'])) {
+
+    echo $_SESSION['txtmake'];
+
+    unset($_SESSION['txtmake']);
+  }
   ?>
 
 

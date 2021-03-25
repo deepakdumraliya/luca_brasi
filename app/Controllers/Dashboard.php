@@ -517,7 +517,7 @@ class Dashboard extends BaseController
         }
     }
     /**
-    * New car form
+    * View days list
     */
    public function view_days()
    {
@@ -534,5 +534,18 @@ class Dashboard extends BaseController
 
        $this->footer();
    }
+
+    /**
+    * View messages
+    */
+    public function messages()
+    {
+    
+        $this->header();
+ 
+        echo view('messages');
+ 
+        $this->footer();
+    }
     //========================================================================================================
 }

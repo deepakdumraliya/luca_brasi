@@ -154,7 +154,7 @@ if (isset($admin_details)) {
 
 
 
-     
+
         <li class="nav-item active">
 
           <a class="nav-link" href="<?php echo base_url(); ?>/dashboard/view_days">
@@ -164,6 +164,28 @@ if (isset($admin_details)) {
             <span>Driving Days</span></a>
 
         </li>
+
+        <!-- Heading -->
+
+        <div class="sidebar-heading">
+
+         Messages
+
+        </div>
+
+
+
+
+        <li class="nav-item active">
+
+          <a class="nav-link" href="<?php echo base_url(); ?>/dashboard/messages">
+
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+
+            <span>Driver Messages</span></a>
+
+        </li>
+
 
 
         <!-- Sidebar Toggler (Sidebar) -->

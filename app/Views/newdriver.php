@@ -77,6 +77,25 @@
 
              </div>
 
+
+
+
+
+             <div class="form-group row">
+
+               <div class="col-sm-6 mb-3 mb-sm-0">
+
+                 <input type="password" class="form-control form-control-user" id="password" name="txtpassword" placeholder="Password" pattern=".{8,}" title="Minimum 8 letters are required" required>
+
+               </div>
+
+               <div class="col-sm-6">
+
+                 <input type="password" class="form-control form-control-user" id="repeatpassword" name="txtrepeatpassword" placeholder="Confirm Password" required>
+
+               </div>
+
+             </div>
              <div class="form-group row">
 
                <div class="col-sm-4 mb-3 mb-sm-0 ">
@@ -91,49 +110,27 @@
 
                <div class="col-sm-4 mb-3 mb-sm-0" id="expirydate" hidden>
 
-                 <input type="date" class="form-control form-control-user" id="dtexpdate" name="dtexpdate" placeholder="Enter Expiry Date." >
-
+                 <input type="date" class="form-control form-control-user" id="dtexpdate" name="dtexpdate" placeholder="Enter Expiry Date.">
                </div>
-           
-             
-
              </div>
-
-
-
-             <div class="form-group row">
-
-                  <div class="col-sm-6 mb-3 mb-sm-0">
-
-                    <input type="password" class="form-control form-control-user" id="password" name="txtpassword" placeholder="Password"  pattern=".{8,}" title="Minimum 8 letters are required" required>
-
-                  </div>
-
-                  <div class="col-sm-6">
-
-                    <input type="password" class="form-control form-control-user" id="repeatpassword"  name="txtrepeatpassword" placeholder="Confirm Password" required>
-
-                  </div>
-
-                </div>
-              </div>
-
-            <input type="submit" class="btn btn-primary btn-user btn-block" value="Add Driver" name="btnadddriver" />
-
-           </form>
-
          </div>
+
+         <input type="submit" class="btn btn-primary btn-user btn-block" value="Add Driver" name="btnadddriver" />
+
+         </form>
 
        </div>
 
      </div>
-      
-</div>
-
-
-
 
    </div>
+
+ </div>
+
+
+
+
+ </div>
 
 
 

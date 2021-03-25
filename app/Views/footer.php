@@ -6,7 +6,7 @@
 
      <div class="copyright text-center my-auto">
 
-       <span>Copyright &copy; CARMA 2021</span>
+       <span>Copyright &copy; LUCA BRASI 2021</span>
 
      </div>
 
@@ -211,12 +211,9 @@
 
        carexists: "<?php echo base_url("/index.php/dashboard/carexists"); ?>",
        update_email: "<?php echo base_url("/index.php/dashboard/update_email"); ?>",
-       deletecarmngr: "<?php echo base_url("/index.php/dashboard/deletecarmngr"); ?>"
-
-
-
+       deletecarmngr: "<?php echo base_url("/index.php/dashboard/deletecarmngr"); ?>",
+       deleteday: "<?php echo base_url("/index.php/dashboard/delete_driving_day"); ?>"
      }
-
    }
  </script>
 

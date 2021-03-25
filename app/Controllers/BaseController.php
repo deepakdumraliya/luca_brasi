@@ -18,6 +18,8 @@ use CodeIgniter\Controller;
 use App\Models\UserModel;
 use App\Models\CarModel;
 use App\Models\DrivingDayModel;
+use App\Models\StationModel;
+use App\Models\FuelModel;
 
 
 class BaseController extends Controller
@@ -53,6 +55,8 @@ class BaseController extends Controller
 		$this->usermodel= new UserModel();
 		$this->carmodel= new CarModel();
 		$this->drivingmodel= new DrivingDayModel();
+		$this->stationmodel= new StationModel();
+		$this->fuelmodel= new FuelModel();
 		$this->validation = \Config\Services::validation();
 	}
 

@@ -23,7 +23,7 @@ class App extends BaseConfig
 	 *
 	 * @var string
 	 */
-	public $baseURL = 'http://test-bh.potenzaglobalsolutions.com/luca-brasi/';
+	public $baseURL = 'http://localhost/luca_brasi';
 
 	/**
 	 * --------------------------------------------------------------------------

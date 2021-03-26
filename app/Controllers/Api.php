@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Controllers;
+
+
 /**
  * Class BaseController
  *
@@ -475,50 +477,53 @@ class Api extends BaseController
      * @param
      * day_id : ##
      * message : ##
+     * driver_id : ##
      */
     public function send_message()
-    {   
+    {
         $response = array("status" => "error");
-        $required_fields = array( "day_id","message");
+        $required_fields = array("day_id", "driver_id", "message");
         $status = $this->verifyRequiredParams($required_fields);
-        if($status)
-        {
+        if ($status) {
             $day_id             =   trim($this->request->getVar('day_id'));
             $message            =   trim($this->request->getVar('message'));
+            $driver_id          =   trim($this->request->getVar('driver_id'));
 
             if (isset($day_id) && empty($day_id)) {
-				$response['message'] = "Please enter end day id";
-				$this->sendResponse($response);
-			}
-
-            if (isset($message) && empty($message)) {
-				$response['message'] = "Please enter end message";
-				$this->sendResponse($response);
-			}
-
-            $data=array(
-                'message'   =>   $message,
-                'day_id'    =>   $day_id
-            );
-
-            $res=$this->db->table('message')->insert($data);
-
-            if($res)
-            {
-                $response['status']="success";
-                $response['message']="message sent successfully.";
+                $response['message'] = "Please enter end day id";
                 $this->sendResponse($response);
             }
-            else
-            {
-                $response['message']="Something went wrong.";
+
+            if (isset($message) && empty($message)) {
+                $response['message'] = "Please enter end message";
+                $this->sendResponse($response);
             }
+
+
+            if (isset($driver_id) && empty($driver_id)) {
+                $response['message'] = "Please enter end driver id";
+                $this->sendResponse($response);
+            }
+
+            $data = array(
+                'message'   =>   $message,
+                'day_id'    =>   $day_id,
+                'user_id'   =>   $driver_id
+            );
+
+            $res = $this->db->table('message')->insert($data);
+
+            if ($res) {
+                $response['status'] = "success";
+                $response['message'] = "message sent successfully";
+                $this->sendResponse($response);
+            } else {
+                $response['message'] = "Something went wrong";
+            }
+        } else {
+            $response['message'] = "One or more fields required";
         }
-        else
-        {
-            $response['message']="One or more fields required.";
-        }
-         $this->sendResponse($response);
+        $this->sendResponse($response);
     }
 
     /**

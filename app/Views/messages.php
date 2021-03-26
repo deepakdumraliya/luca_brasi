@@ -4,11 +4,9 @@
         max-width: 1170px;
         margin: auto;
     }
-
     img {
         max-width: 100%;
     }
-
     .inbox_people {
         background: #f8f8f8 none repeat scroll 0 0;
         float: left;
@@ -16,42 +14,34 @@
         width: 40%;
         border-right: 1px solid #c4c4c4;
     }
-
     .inbox_msg {
         border: 1px solid #c4c4c4;
         clear: both;
         overflow: hidden;
     }
-
     .top_spac {
         margin: 20px 0 0;
     }
-
-
     .recent_heading {
         float: left;
         width: 40%;
     }
-
     .srch_bar {
         display: inline-block;
         text-align: right;
         width: 60%;
         padding:
     }
-
     .headind_srch {
         padding: 10px 29px 10px 20px;
         overflow: hidden;
         border-bottom: 1px solid #c4c4c4;
     }
-
     .recent_heading h4 {
         color: #05728f;
         font-size: 21px;
         margin: auto;
     }
-
     .srch_bar input {
         border: 1px solid #cdcdcd;
         border-width: 0 0 1px 0;
@@ -59,7 +49,6 @@
         padding: 2px 0 4px 6px;
         background: none;
     }
-
     .srch_bar .input-group-addon button {
         background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
         border: medium none;
@@ -67,71 +56,58 @@
         color: #707070;
         font-size: 18px;
     }
-
     .srch_bar .input-group-addon {
         margin: 0 0 0 -27px;
     }
-
     .chat_ib h5 {
         font-size: 15px;
         color: #464646;
         margin: 0 0 8px 0;
     }
-
     .chat_ib h5 span {
         font-size: 13px;
         float: right;
     }
-
     .chat_ib p {
         font-size: 14px;
         color: #989898;
         margin: auto
     }
-
     .chat_img {
         float: left;
         width: 11%;
     }
-
     .chat_ib {
         float: left;
         padding: 0 0 0 15px;
         width: 88%;
     }
-
     .chat_people {
         overflow: hidden;
         clear: both;
     }
-
     .chat_list {
         border-bottom: 1px solid #c4c4c4;
         margin: 0;
         padding: 18px 16px 10px;
     }
-
     .inbox_chat {
         height: 550px;
         overflow-y: scroll;
     }
-
     .active_chat {
         background: #ebebeb;
     }
-
     .incoming_msg_img {
         display: inline-block;
         width: 6%;
     }
-
     .received_msg {
         display: inline-block;
         padding: 0 0 0 10px;
         vertical-align: top;
         width: 92%;
     }
-
     .received_withd_msg p {
         background: #ebebeb none repeat scroll 0 0;
         border-radius: 3px;
@@ -141,24 +117,20 @@
         padding: 5px 10px 5px 12px;
         width: 100%;
     }
-
     .time_date {
         color: #747474;
         display: block;
         font-size: 12px;
         margin: 8px 0 0;
     }
-
     .received_withd_msg {
         width: 57%;
     }
-
     .mesgs {
         float: left;
         padding: 30px 15px 0 25px;
         width: 60%;
     }
-
     .sent_msg p {
         background: #05728f none repeat scroll 0 0;
         border-radius: 3px;
@@ -168,17 +140,14 @@
         padding: 5px 10px 5px 12px;
         width: 100%;
     }
-
     .outgoing_msg {
         overflow: hidden;
         margin: 26px 0 26px;
     }
-
     .sent_msg {
         float: right;
         width: 46%;
     }
-
     .input_msg_write input {
         background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
         border: medium none;
@@ -187,12 +156,10 @@
         min-height: 48px;
         width: 100%;
     }
-
     .type_msg {
         border-top: 1px solid #c4c4c4;
         position: relative;
     }
-
     .msg_send_btn {
         background: #05728f none repeat scroll 0 0;
         border: medium none;
@@ -206,11 +173,9 @@
         top: 11px;
         width: 33px;
     }
-
     .messaging {
         padding: 0 0 50px 0;
     }
-
     .msg_history {
         height: 516px;
         overflow-y: auto;
@@ -219,14 +184,9 @@
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <!------ Include the above in your HEAD tag ---------->
-
-
 <html>
-
 <head>
-
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" type="text/css" rel="stylesheet" </head>
-
 <body>
     <div class="container">
         <!-- <h3 class=" text-center">Messaging</h3> -->
@@ -237,65 +197,51 @@
                         <div class="recent_heading">
                             <h4>Drivers</h4>
                         </div>
-                      
                     </div>
-                    <div class="inbox_chat">
-                        <div class="chat_list active_chat">
-                            <div class="chat_people">
-                             
-                                <div class="chat_ib">
-                                    <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                                    <p>Test, which is a new approach to have all solutions
-                                        astrology under one roof.</p>
+                    <?php
+                    if (isset($drivers)) {
+                    ?>
+                        <div class="inbox_chat">
+                            <?php
+                            foreach ($drivers  as $driver) {
+                            ?>
+                                <div class="chat_list" id=<?php echo  $driver['user_id']; ?>>
+                                    <div class="chat_people">
+                                        <div class="chat_ib">
+                                            <h5><?php echo $driver['first_name'] . " " . $driver['last_name'];   ?>
+                                                <span class="chat_date"><?php echo date("F d", strtotime($driver['created']))     .     "  ";   ?>
+                                                              <?php
+                                                              foreach      ($drivers_count as $cdriver)      {
+                                                                                      if ($driver['user_id']     == $cdriver['user_id'])      {
+                                                              ?>    
+                                                                                                    <i class='fas fa-bell' id=<?php echo $driver['user_id'];  ?> style='font-size:14px;color:mediumslateblue;'><?php echo $cdriver['message_count'];    ?></i>
+                                                    <?php
+                                                                                      }
+                                                                        }
+                                                    ?>
+                                                </span>
+                                            </h5>
+                                            <p><?php
+                                                echo substr($driver['message'], 0, 10) . "....";
+                                                ?>.</p>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+                            <?php
+                            }
+                            ?>
                         </div>
-                       
-                    </div>
+                    <?php
+                    }
+                    ?>
                 </div>
                 <div class="mesgs">
                     <div class="msg_history">
-                        <div class="incoming_msg">
-                          
-                            <div class="received_msg">
-                                <div class="received_withd_msg">
-                                    <p>Test which is a new approach to have all
-                                        solutions</p>
-                                    <span class="time_date"> 11:01 AM | June 9</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                        <div class="incoming_msg">
-                          
-                            <div class="received_msg">
-                                <div class="received_withd_msg">
-                                    <p>Test, which is a new approach to have</p>
-                                    <span class="time_date"> 11:01 AM | Yesterday</span>
-                                </div>
-                            </div>
-                        </div>
-                     
-                        <div class="incoming_msg">
-                          
-                            <div class="received_msg">
-                                <div class="received_withd_msg">
-                                    <p>We work directly with our designers and suppliers,
-                                        and sell direct to you, which means quality, exclusive
-                                        products, at a price anyone can afford.</p>
-                                    <span class="time_date"> 11:01 AM | Today</span>
-                                </div>
-                            </div>
-                        </div>
+                        
                     </div>
-                 
                 </div>
             </div>
-
-
-
         </div>
     </div>
 </body>
-
 </html>

@@ -1,0 +1,9 @@
+[25-Mar-2021 08:37:42 America/Chicago] PHP Fatal error:  Uncaught ErrorException: print_r(): Property access is not allowed yet in /home3/potenzag/public_html/test-bh-pgs/luca-brasi/app/Views/errors/html/error_exception.php:100
+Stack trace:
+#0 [internal function]: CodeIgniter\Debug\Exceptions->errorHandler(2, 'print_r(): Prop...', '/home3/potenzag...', 100, Array)
+#1 /home3/potenzag/public_html/test-bh-pgs/luca-brasi/app/Views/errors/html/error_exception.php(100): print_r(Object(App\Controllers\Home), true)
+#2 /home3/potenzag/public_html/test-bh-pgs/luca-brasi/system/Debug/Exceptions.php(281): include('/home3/potenzag...')
+#3 /home3/potenzag/public_html/test-bh-pgs/luca-brasi/system/Debug/Exceptions.php(147): CodeIgniter\Debug\Exceptions->render(Object(CodeIgniter\Database\Exceptions\DatabaseException), 500)
+#4 [internal function]: CodeIgniter\Debug\Exceptions->exceptionHandler(Object(CodeIgniter\Database\Exceptions\DatabaseException))
+#5 {main}
+  thrown in /home3/potenzag/public_html/test-bh-pgs/luca-brasi/app/Views/errors/html/error_exception.php on line 100

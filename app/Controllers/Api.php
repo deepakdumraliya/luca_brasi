@@ -102,7 +102,7 @@ class Api extends BaseController
 				'password' => md5($password),
 			);
 
-            $data=$this->db->table('users')->select('user_id')->where($condition)->get()->getRowArray();
+            $data=$this->db->table('tbl_user')->select('user_id')->where($condition)->get()->getRowArray();
 
             if(!empty($data))
             {

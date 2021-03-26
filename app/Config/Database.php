@@ -33,9 +33,9 @@ class Database extends Config
 	public $default = [
 		'DSN'      => '',
 		'hostname' => 'localhost',
-		'username' => 'root',
-		'password' => 'Potenza@123',
-		'database' => 'luca_brasi',
+		'username' => 'potenzag_luca',
+		'password' => '@$q!Q)8};89x',
+		'database' => 'potenzag_luca_brasi',
 		'DBDriver' => 'MySQLi',
 		'DBPrefix' => '',
 		'pConnect' => false,

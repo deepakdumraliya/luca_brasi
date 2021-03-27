@@ -3,10 +3,8 @@
 namespace App\Controllers;
 
 require_once ROOTPATH . '/vendor/autoload.php';
-
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-
 /**
  * Cronjob controller used to create cronjob 
  */
@@ -39,7 +37,6 @@ class Cronjob extends BaseController
     public function getdays()
     {
         $days = array();
-
         for ($i = 1; $i < $this->day; $i++) {
             $date = date("l", mktime(0, 0, 0, $this->month, $i, $this->year));
             array_push($days, $date);
@@ -71,12 +68,9 @@ class Cronjob extends BaseController
     }
     public function getdate()
     {
-
         $dateword = array();
         for ($i = 1; $i < $this->day; $i++) {
-
             $daykey = date("d-m-Y", mktime(0, 0, 0, $this->month, $i, $this->year));
-
             array_push($dateword, $daykey);
         }
         return $dateword;
@@ -128,6 +122,13 @@ class Cronjob extends BaseController
         }
         return $germanmonth;
     }
+    public function gettime($start, $end)
+    {
+        $dateTimeObject1 = date_create($start);
+        $dateTimeObject2 = date_create($end);
+        $difference = date_diff($dateTimeObject1, $dateTimeObject2);
+        return $difference->format('%h:%i:%s');
+    }
     public function genratexcel()
     {
         // (C) GET WORKSHEET
@@ -144,7 +145,6 @@ class Cronjob extends BaseController
                 'allBorders' => [
                     'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THICK,
                 ],
-
             ],
             'fill' => [
                 'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
@@ -157,7 +157,6 @@ class Cronjob extends BaseController
         $styleheaderdetails = [
             'font' => [
                 'bold' => true,
-
             ],
             'alignment' => [
                 'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
@@ -166,7 +165,6 @@ class Cronjob extends BaseController
                 'allBorders' => [
                     'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
                 ],
-
             ],
             'fill' => [
                 'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
@@ -179,7 +177,6 @@ class Cronjob extends BaseController
         $styleheaderdetailsjob = [
             'font' => [
                 'bold' => true,
-
             ],
             'alignment' => [
                 'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
@@ -188,9 +185,7 @@ class Cronjob extends BaseController
                 'allBorders' => [
                     'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
                 ],
-
             ],
-
         ];
         $employees = $this->getdrivers();
         $days = $this->getdays();
@@ -199,27 +194,33 @@ class Cronjob extends BaseController
             $sheet = $this->spreadsheet->getSheet($key);
             $sheet->setTitle($emp['first_name'] . " " . $emp['last_name']);
             $excelsheet = array();
-
-            $workingdays = $this->db->table('driving_day')->where('user_id', $emp['user_id'])->get()->getResultArray();
-
+            $workingdays = $this->db->table('driving_day')->where('user_id', $emp['user_id'])->join('tbl_car', 'tbl_car.car_id=driving_day.car_id')->join('destinations', 'driving_day.destincation_id=destinations.destination_id')->get()->getResultArray();
+           
+         
             for ($i = 0; $i < count($days); $i++) {
                 //  start_timestamp
                 $dayrecord = array($days[$i], $dateword[$i]);
                 foreach ($workingdays as $work) {
-                    if ($dateword[$i] == date("d-m-Y", strtotime($work['created']))) {
-                        $dayrecord = array($days[$i], $dateword[$i], date("h:m", strtotime($work['created'])));
+                    print_r($dateword[$i] . "  ==   " . date("d-m-Y", strtotime($work['end_timestamp'])));
+                    echo "<pre>";
+                    if ($dateword[$i] == date("d-m-Y", strtotime($work['start_timestamp']))) {
+                        if ($work['start_timestamp'] != "") {
+                            if ($work['end_timestamp'] == "") {
+                                $dayrecord = array($days[$i], $dateword[$i], date("h:m", strtotime($work['start_timestamp'])), " - ", " - ");
+                            } else {
+                                echo "<br>";
+                                $dayrecord = array($days[$i], $dateword[$i], date("h:m", strtotime($work['start_timestamp'])), date("h:m", strtotime($work['end_timestamp'])), $this->gettime($work['start_timestamp'], $work['end_timestamp']), $work['car_noplate'], $work['name']);
+                            }
+                            print_r($work['created']);
                         echo "hello";
+                        }
                     }
                 }
-
-
                 array_push($excelsheet, $dayrecord);
             }
             $cRow = 7;
             $cCol = 0;
-            echo "<pre>";
-            print_r($excelsheet);
-            die();
+           
             foreach ($excelsheet as $key => $row) {
                 $sheet->mergeCells('B3:L3');
                 $sheet->setCellValue('B3', 'KPS - Zeiterfassung');
@@ -259,7 +260,6 @@ class Cronjob extends BaseController
                     ->getStartColor()->setARGB('ffff00');
                 $cRow++; // NEXT ROW
                 $cCol = 66; // RESET COLUMN "A"
-
                 foreach ($row as $cell) {
                     $sheet->setCellValue(chr($cCol) . $cRow, $cell);
                     $cCol++;
@@ -273,7 +273,6 @@ class Cronjob extends BaseController
             mkdir($rootpath, 0777, TRUE);
         }
         $path = $rootpath . '/demoA.xlsx';
-
         if ($writer->save($path)) {
             echo "done";
         }

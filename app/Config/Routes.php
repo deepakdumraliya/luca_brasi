@@ -36,7 +36,7 @@ $routes->setAutoRoute(true);
 $routes->get('/', 'Home::index');
 $routes->add('/api', 'Api::index');
 $routes->add('/cronjob', 'Cronjob::index');
-$routes->add('/genratexcel', 'Cronjob::genratexcel');
+$routes->add('/cronjob/genratexcel', 'Cronjob::genratexcel');
 
 $routes->add('/api/get-destincations', 'Api::get_destinations');
 

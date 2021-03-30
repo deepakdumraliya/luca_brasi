@@ -23,12 +23,14 @@ class Cronjob extends BaseController
     protected  $month;
     protected   $day;
     protected $spreadsheet;
+    protected $email;
     public function __construct()
     {
         $this->year = date("Y");
         $this->month = date("m");
         $this->day = date("d");
         $this->spreadsheet = new Spreadsheet();
+        $this->email = \Config\Services::email();
     }
     public function index()
     {
@@ -127,7 +129,7 @@ class Cronjob extends BaseController
         $dateTimeObject1 = date_create($start);
         $dateTimeObject2 = date_create($end);
         $difference = date_diff($dateTimeObject1, $dateTimeObject2);
-        return $difference->format('%h:%i:%s');
+        return (float)$difference->format('%h.%i');
     }
     public function genratexcel()
     {
@@ -187,6 +189,17 @@ class Cronjob extends BaseController
                 ],
             ],
         ];
+        $styleheaderdetailsdata = [
+            
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+        ];
         $employees = $this->getdrivers();
         $days = $this->getdays();
         $dateword = $this->getdate();
@@ -195,24 +208,19 @@ class Cronjob extends BaseController
             $sheet->setTitle($emp['first_name'] . " " . $emp['last_name']);
             $excelsheet = array();
             $workingdays = $this->db->table('driving_day')->where('user_id', $emp['user_id'])->join('tbl_car', 'tbl_car.car_id=driving_day.car_id')->join('destinations', 'driving_day.destincation_id=destinations.destination_id')->get()->getResultArray();
-           
-         
             for ($i = 0; $i < count($days); $i++) {
                 //  start_timestamp
                 $dayrecord = array($days[$i], $dateword[$i]);
                 foreach ($workingdays as $work) {
-                    print_r($dateword[$i] . "  ==   " . date("d-m-Y", strtotime($work['end_timestamp'])));
-                    echo "<pre>";
+                   
                     if ($dateword[$i] == date("d-m-Y", strtotime($work['start_timestamp']))) {
                         if ($work['start_timestamp'] != "") {
                             if ($work['end_timestamp'] == "") {
                                 $dayrecord = array($days[$i], $dateword[$i], date("h:m", strtotime($work['start_timestamp'])), " - ", " - ");
                             } else {
-                                echo "<br>";
                                 $dayrecord = array($days[$i], $dateword[$i], date("h:m", strtotime($work['start_timestamp'])), date("h:m", strtotime($work['end_timestamp'])), $this->gettime($work['start_timestamp'], $work['end_timestamp']), $work['car_noplate'], $work['name']);
                             }
-                            print_r($work['created']);
-                        echo "hello";
+                           
                         }
                     }
                 }
@@ -245,6 +253,22 @@ class Cronjob extends BaseController
                 $sheet->setCellValue('F6', 'Stunden');
                 $sheet->setCellValue('G6', 'Kennzeichen');
                 $sheet->setCellValue('H6', 'Station');
+                $sheet->mergeCells('B40:D40');
+                $sheet->mergeCells('B41:D41');
+                $sheet->mergeCells('B42:D42');
+                $sheet->mergeCells('B43:D43');
+                $sheet->mergeCells('E40:F40');
+                $sheet->mergeCells('E41:F41');
+                $sheet->mergeCells('E42:F42');
+                $sheet->mergeCells('E43:F43');
+
+                $sheet->setCellValue('B40', 'Summe der Arbeitsstunden TOTAL');
+                $sheet->setCellValue('E40', '=SUM(F8:F36)');
+                $sheet->setCellValue('B41', './. Sollstunden / Monat:');
+                $sheet->setCellValue('B42', 'Plusstunden laufender Monat');
+                $sheet->setCellValue('B43', 'Verschuldete Unfälle');
+                $sheet->getStyle('B8:H36')->applyFromArray($styleheaderdetailsdata);
+                $sheet->getStyle('B40:F43')->applyFromArray($styleheaderdetailsjob);
                 $sheet->getStyle('B6:H7')->applyFromArray($styleheaderdetailsjob);
                 $sheet->getStyle('B6:F6')->getFill()
                     ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
@@ -262,6 +286,33 @@ class Cronjob extends BaseController
                 $cCol = 66; // RESET COLUMN "A"
                 foreach ($row as $cell) {
                     $sheet->setCellValue(chr($cCol) . $cRow, $cell);
+                    if ($row['0'] == "Montag" || $row['0'] == "Sonntag") {
+                        $sheet->getStyle('C' . $cRow . ':F' . $cRow)->applyFromArray($styleheaderdetailsjob);
+                        $sheet->getStyle('C' . $cRow . ':F' . $cRow)->getFill()
+                        ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                            ->getStartColor()->setARGB('bcd6ee');
+                    }
+                    if (isset($row['2'])) {
+
+                        if (isset($row['4'])) {
+                            if ($row['4'] < 8) {
+                                $sheet->getStyle('F' . $cRow)->getFill()
+                                ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                                    ->getStartColor()->setARGB('8497b0');
+                            } else {
+                                $sheet->getStyle('F' . $cRow)->getFill()
+                                ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                                    ->getStartColor()->setARGB('8497b0');
+                            }
+                            $sheet->getStyle('C' . $cRow . ':H' . $cRow)->applyFromArray($styleheaderdetailsjob);
+                            $sheet->getStyle('G' . $cRow)->getFill()
+                            ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                                ->getStartColor()->setARGB('fbe4d5');
+                            $sheet->getStyle('H' . $cRow)->getFill()
+                            ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                                ->getStartColor()->setARGB('fff3cb');
+                        }
+                    }
                     $cCol++;
                 }
             }
@@ -272,9 +323,21 @@ class Cronjob extends BaseController
         if (!is_dir($rootpath)) {
             mkdir($rootpath, 0777, TRUE);
         }
-        $path = $rootpath . '/demoA.xlsx';
-        if ($writer->save($path)) {
-            echo "done";
+        $path = $rootpath . '/Zeiterfassung' . date('Y-m-d') . '.xlsx';
+        $writer->save($path);
+        return $path;
+    }
+    public function sendreport()
+    {
+        print_r($this->genratexcel());
+        $this->email->setFrom("carma@gmail.com", 'Carma');
+        $this->email->setTo('admin@yopmail.com');
+        $this->email->setSubject('Carma | Damage Report');
+        //$this->email->attach($this->genratexcel());
+        if ($this->emailemail->send()) {
+            return true;
+        } else {
+            return false;
         }
     }
     //--------------------------------------------------------------------
